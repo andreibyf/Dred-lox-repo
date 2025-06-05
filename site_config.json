@@ -1,0 +1,6 @@
+{
+  "db_name": "microcrm",
+  "db_password": "microcrmpassword",
+  "admin_password": "admin",
+  "installed_apps": "frappe"
+}
