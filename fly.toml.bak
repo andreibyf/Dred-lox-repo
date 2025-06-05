@@ -3,20 +3,24 @@
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = "microcrm-client1"
-primary_region = "mia"
+app = 'microcrm-client1'
+primary_region = 'mia'
+
+[experimental]
+  auto_rollback = true
 
 [build]
-  dockerfile = "Dockerfile"
+  dockerfile = 'Dockerfile'
 
 [env]
-  INSTALL_APPS = "frappe_crm"
-  SITE_NAME = "microcrm.local"
+  INSTALL_APPS = 'frappe_crm'
+  MYSQL_ROOT_PASSWORD = 'root'
+  SITE_NAME = 'microcrm.local'
   PORT = "8000"
 
 [[vm]]
-  memory = "1gb"
-  cpu_kind = "shared"
+  memory = '1gb'
+  cpu_kind = 'shared'
   cpus = 1
 
 [http_service]
