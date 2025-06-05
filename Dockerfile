@@ -1,41 +1,39 @@
-FROM python:3.10-slim
+# Base image
+FROM frappe/frappe:v14
 
-# Environment setup
-ENV DEBIAN_FRONTEND=noninteractive
+# Set working directory
 WORKDIR /home/frappe
 
-# Install system dependencies
+# Install any extra system packages (you can expand this as needed)
 RUN apt update && apt install -y \
-    mariadb-server \
-    redis-server \
+    mariadb-client \
+    redis-tools \
     curl \
     git \
     supervisor \
-    nodejs \
-    npm \
-    wkhtmltopdf \
-    build-essential \
-    libffi-dev \
-    python3-dev \
-    libssl-dev \
-    libmysqlclient-dev \
     && apt clean
 
-# Install bench
+# Init frappe bench (skip if you already have it in base image)
 RUN pip install frappe-bench && bench init frappe-bench --frappe-branch version-14
 
 WORKDIR /home/frappe/frappe-bench
 
-# Create site (you can automate this with a script later)
+# Create new site
 COPY site_config.json sites/microcrm.local/site_config.json
 RUN bench new-site microcrm.local --no-mariadb-socket --mariadb-root-password=root --admin-password=admin
+
+# Add frappe_crm app
 RUN bench get-app https://github.com/frappe/frappe_crm --branch version-14
 RUN bench --site microcrm.local install-app frappe_crm
 
-# Bind to 0.0.0.0
+# Set port for webserver (Gunicorn will bind here)
 RUN echo "webserver_port = 8000" >> sites/common_site_config.json
 
-# Start everything through supervisor
+# Copy supervisor config
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-CMD ["/usr/bin/supervisord"]
 
+# Expose port
+EXPOSE 8000
+
+# Start services
+CMD ["supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
