@@ -10,14 +10,21 @@ primary_region = 'mia'
   auto_rollback = true
 
 [build]
-  builder = 'Dockerfile'
+  dockerfile = 'Dockerfile'
 
 [env]
   INSTALL_APPS = 'frappe_crm'
   MYSQL_ROOT_PASSWORD = 'root'
   SITE_NAME = 'microcrm.local'
+  PORT = "8080"
 
 [[vm]]
   memory = '1gb'
   cpu_kind = 'shared'
   cpus = 1
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
