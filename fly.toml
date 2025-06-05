@@ -1,0 +1,13 @@
+app = "microcrm-client1"
+primary_region = "mia"
+
+[build]
+builder = "Docker"
+
+[env]
+SITE_NAME = "microcrm.local"
+MYSQL_ROOT_PASSWORD = "root"
+INSTALL_APPS = "frappe_crm"
+
+[experimental]
+auto_rollback = true
