@@ -1,13 +1,23 @@
-app = "microcrm-client1"
-primary_region = "mia"
+# fly.toml app configuration file generated for microcrm-client1 on 2025-06-05T10:17:38-04:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
 
-[build]
-builder = "Docker"
-
-[env]
-SITE_NAME = "microcrm.local"
-MYSQL_ROOT_PASSWORD = "root"
-INSTALL_APPS = "frappe_crm"
+app = 'microcrm-client1'
+primary_region = 'mia'
 
 [experimental]
-auto_rollback = true
+  auto_rollback = true
+
+[build]
+  builder = 'Dockerfile'
+
+[env]
+  INSTALL_APPS = 'frappe_crm'
+  MYSQL_ROOT_PASSWORD = 'root'
+  SITE_NAME = 'microcrm.local'
+
+[[vm]]
+  memory = '1gb'
+  cpu_kind = 'shared'
+  cpus = 1
