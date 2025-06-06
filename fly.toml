@@ -12,9 +12,9 @@ primary_region = "mia"
 [env]
   INSTALL_APPS = "frappe_crm"
   SITE_NAME = "microcrm.local"
-  ADMIN_PASSWORD = "admin"             # ✅ Add this
-  DB_ROOT_PASSWORD = "root"            # ✅ Add this
   PORT = "8000"
+  fly secrets set ADMIN_PASSWORD=Trigger!@7691 DB_ROOT_PASSWORD=Trigger!@7691
+
 
 [[vm]]
   memory = "1gb"
