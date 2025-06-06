@@ -24,10 +24,15 @@ RUN mkdir -p sites/${SITE_NAME} && \
 EOF
 
 # Create the Frappe site, install CRM app, configure web port
-RUN bench new-site ${SITE_NAME} --no-mariadb-socket --force && \
+RUN bench new-site ${SITE_NAME} \
+    --no-mariadb-socket \
+    --mariadb-root-password=${DB_ROOT_PASSWORD} \
+    --admin-password=${ADMIN_PASSWORD} \
+    --force && \
     bench get-app https://github.com/frappe/frappe_crm --branch version-14 && \
     bench --site ${SITE_NAME} install-app frappe_crm && \
     echo "webserver_port = 8000" >> sites/common_site_config.json
+
 
 # Copy supervisor config
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
