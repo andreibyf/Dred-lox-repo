@@ -12,6 +12,8 @@ primary_region = "mia"
 [env]
   INSTALL_APPS = "frappe_crm"
   SITE_NAME = "microcrm.local"
+  ADMIN_PASSWORD = "admin"             # ✅ Add this
+  DB_ROOT_PASSWORD = "root"            # ✅ Add this
   PORT = "8000"
 
 [[vm]]
