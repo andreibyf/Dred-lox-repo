@@ -1,6 +1,11 @@
 {
   "db_name": "microcrm",
-  "db_password": "password123",
+  "db_password": "admin",
   "db_type": "mariadb",
-  "db_host": "localhost"
+  "redis_cache": "redis://localhost:6379",
+  "redis_queue": "redis://localhost:6379",
+  "redis_socketio": "redis://localhost:6379",
+  "socketio_port": 9000,
+  "developer_mode": 1
 }
+
