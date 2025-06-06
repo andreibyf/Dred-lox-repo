@@ -2,7 +2,12 @@ FROM frappe/erpnext:v14
 
 WORKDIR /home/frappe/frappe-bench
 
-# Create site_config.json with environment variables provided by Fly secrets
+# Define build-time variables
+ARG SITE_NAME
+ARG DB_ROOT_PASSWORD
+ARG ADMIN_PASSWORD
+
+# Create site config file
 RUN mkdir -p sites/${SITE_NAME} && \
     cat <<EOF > sites/${SITE_NAME}/site_config.json
 {
@@ -16,6 +21,7 @@ RUN mkdir -p sites/${SITE_NAME} && \
 }
 EOF
 
+# Build the site and install app
 RUN bench new-site ${SITE_NAME} \
     --no-mariadb-socket \
     --mariadb-root-password=${DB_ROOT_PASSWORD} \
@@ -28,3 +34,4 @@ RUN bench new-site ${SITE_NAME} \
 EXPOSE 8000
 
 CMD ["supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
+
