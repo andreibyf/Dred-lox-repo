@@ -1,39 +1,27 @@
-# Base image
-FROM frappe/frappe:v14
+# ✅ Use official ERPNext v14 base image (includes Frappe + MariaDB + Redis + Node)
+FROM frappe/erpnext:v14
 
 # Set working directory
-WORKDIR /home/frappe
-
-# Install any extra system packages (you can expand this as needed)
-RUN apt update && apt install -y \
-    mariadb-client \
-    redis-tools \
-    curl \
-    git \
-    supervisor \
-    && apt clean
-
-# Init frappe bench (skip if you already have it in base image)
-RUN pip install frappe-bench && bench init frappe-bench --frappe-branch version-14
-
 WORKDIR /home/frappe/frappe-bench
 
-# Create new site
+# Copy site config (ensure this file exists in your repo)
 COPY site_config.json sites/microcrm.local/site_config.json
+
+# Create new site (mariadb already running inside image)
 RUN bench new-site microcrm.local --no-mariadb-socket --mariadb-root-password=root --admin-password=admin
 
-# Add frappe_crm app
+# Get and install frappe_crm (or other apps if needed)
 RUN bench get-app https://github.com/frappe/frappe_crm --branch version-14
 RUN bench --site microcrm.local install-app frappe_crm
 
-# Set port for webserver (Gunicorn will bind here)
+# Set correct port for Gunicorn
 RUN echo "webserver_port = 8000" >> sites/common_site_config.json
 
-# Copy supervisor config
+# Copy supervisord config
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-# Expose port
+# Expose web port
 EXPOSE 8000
 
-# Start services
+# Start app
 CMD ["supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
