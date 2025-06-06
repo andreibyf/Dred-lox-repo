@@ -9,6 +9,20 @@ ADMIN_PASSWORD=${ADMIN_PASSWORD:-"admin"}
 if [ ! -d "sites/$SITE_NAME" ]; then
   echo "Creating site: $SITE_NAME"
 
+mkdir -p sites/${SITE_NAME}
+
+cat > sites/${SITE_NAME}/site_config.json <<EOF
+  {
+    "db_name": "${SITE_NAME}",
+    "db_password": "${DB_ROOT_PASSWORD}",
+    "admin_password": "${ADMIN_PASSWORD}",
+    "redis_cache": "redis://localhost:6379",
+    "redis_queue": "redis://localhost:6379",
+    "redis_socketio": "redis://localhost:6379",
+    "socketio_port": 9000
+  }
+EOF
+
   bench new-site "$SITE_NAME" \
     --no-mariadb-socket \
     --mariadb-root-password="$DB_ROOT_PASSWORD" \
