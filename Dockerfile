@@ -1,4 +1,6 @@
 # ✅ Use official ERPNext v14 base image (includes Frappe + MariaDB + Redis + Node)
+RUN bench new-site microcrm.local --no-mariadb-socket --mariadb-root-password=root --admin-password=admin --force
+
 FROM frappe/erpnext:v14
 
 # Set working directory
