@@ -16,5 +16,5 @@ USER frappe
 # Expose port
 EXPOSE 8000
 
-# Run the init script (runtime site creation)
-CMD ["/entrypoint.sh"]
+# Set the runtime entrypoint to execute the site creation and launch
+ENTRYPOINT ["/entrypoint.sh"]
