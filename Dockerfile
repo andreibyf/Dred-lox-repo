@@ -11,7 +11,7 @@ RUN chmod +x /entrypoint.sh
 USER frappe
 
 # Optional: Set port
-RUN echo "webserver_port = 8000" >> sites/common_site_config.json
+# RUN echo "webserver_port = 8000" >> sites/common_site_config.json
 
 # Expose port
 EXPOSE 8000
