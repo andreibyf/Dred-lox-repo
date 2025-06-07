@@ -5,7 +5,7 @@ SITE_NAME=${SITE_NAME:-"site.local"}
 DB_ROOT_PASSWORD=${DB_ROOT_PASSWORD:?DB root password not set}
 ADMIN_PASSWORD=${ADMIN_PASSWORD:?Admin password not set}
 
-# Create site_config.json before running bench
+# Create site_config.json for MariaDB + Redis + Admin
 mkdir -p sites/${SITE_NAME}
 cat > sites/${SITE_NAME}/site_config.json <<EOF
 {
@@ -19,12 +19,13 @@ cat > sites/${SITE_NAME}/site_config.json <<EOF
 }
 EOF
 
-# Start Redis
+# Start Redis in background
 redis-server --daemonize yes
 
-# Only create site if it doesn't already exist
+# Create site if it doesn't exist
 if [ ! -d "sites/$SITE_NAME" ]; then
   echo "Creating site: $SITE_NAME"
+
   bench new-site "$SITE_NAME" \
     --no-mariadb-socket \
     --mariadb-root-password="$DB_ROOT_PASSWORD" \
@@ -36,7 +37,7 @@ if [ ! -d "sites/$SITE_NAME" ]; then
   bench --site "$SITE_NAME" install-app frappe_crm
 fi
 
-# Patch port setting
+# Patch port if needed
 if [ -f sites/common_site_config.json ]; then
   python3 -c "
 import json
@@ -48,8 +49,5 @@ with open('sites/common_site_config.json', 'w') as f:
 "
 fi
 
-exec gunicorn -b 0.0.0.0:8000 frappe.app:application
-
-
-
-
+# Start all services managed by bench
+exec bench start
