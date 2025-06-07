@@ -19,6 +19,9 @@ cat > sites/${SITE_NAME}/site_config.json <<EOF
 }
 EOF
 
+# Start Redis
+redis-server --daemonize yes
+
 # Only create site if it doesn't already exist
 if [ ! -d "sites/$SITE_NAME" ]; then
   echo "Creating site: $SITE_NAME"
