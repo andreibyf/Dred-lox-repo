@@ -5,9 +5,7 @@ primary_region = "mia"
   dockerfile = "Dockerfile"
 
 [env]
-  SITE_NAME = "microcrm.local"
-  DB_ROOT_PASSWORD = "root"
-  ADMIN_PASSWORD = "admin"
+  SITE_NAME = "microcrm-client1"
   PORT = "8000"
 
 [[vm]]
@@ -18,5 +16,6 @@ primary_region = "mia"
 [http_service]
   internal_port = 8000
   force_https = true
-  auto_stop_machines = true
   auto_start_machines = true
+  auto_stop_machines = true
+
