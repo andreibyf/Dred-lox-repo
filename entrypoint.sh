@@ -48,6 +48,7 @@ with open('sites/common_site_config.json', 'w') as f:
 "
 fi
 
-exec gunicorn -b 0.0.0.0:8000 frappe.app:application
+exec bench start --host 0.0.0.0
+
 
 
