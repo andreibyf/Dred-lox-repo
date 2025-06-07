@@ -48,4 +48,5 @@ with open('sites/common_site_config.json', 'w') as f:
 "
 fi
 
-exec bench start
+exec bench start --host 0.0.0.0
+
