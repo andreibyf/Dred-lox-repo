@@ -4,6 +4,7 @@ WORKDIR /home/frappe/frappe-bench
 
 # Root to copy + chmod
 USER root
+RUN pip3 install frappe-bench
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 RUN apt-get update && apt-get install -y redis-server && rm -rf /var/lib/apt/lists/*
@@ -13,4 +14,4 @@ RUN apt-get update && apt-get install -y redis-server && rm -rf /var/lib/apt/lis
 USER frappe
 
 EXPOSE 8000
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["bash","/entrypoint.sh"]
